@@ -7,11 +7,13 @@ from .pages.basket_page import BasketPage
 import time
 
 @pytest.mark.parametrize('link', ProductPageLocators.PRODUCT_LINK_PARAMS)
+@pytest.mark.need_review
 def test_guest_can_add_product_to_basket(browser, link):
-    page = ProductPage(browser, link)
+    page = ProductPage(browser, link)    
     page.open()
     page.add_product_to_basket()
     page.solve_quiz_and_get_code()
+    time.sleep(5)  # Without this function test does not work with Firefox. Firefox is so slow :(
     page.should_be_match_of_product_names_in_basket_message_and_product_page()
     page.should_be_basket_price_equal_to_added_product_price()
 
@@ -38,14 +40,16 @@ def test_guest_should_see_login_link_on_product_page(browser):
     page = ProductPage(browser, ProductPageLocators.PRODUCT_LINK)
     page.open()
     page.should_be_login_link()
-    
+
+@pytest.mark.need_review    
 def test_guest_can_go_to_login_page_from_product_page(browser):
     page = ProductPage(browser, ProductPageLocators.PRODUCT_LINK)
     page.open()
     page.go_to_login_page()
     login_page = LoginPage(browser, browser.current_url)
     login_page.should_be_login_page()
-    
+
+@pytest.mark.need_review    
 def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     page = ProductPage(browser, ProductPageLocators.PRODUCT_LINK)
     page.open()
@@ -67,7 +71,8 @@ class TestUserAddToBasketFromProductPage():
         page = ProductPage(browser, ProductPageLocators.PRODUCT_LINK)
         page.open()
         page.should_not_be_basket_message()
-        
+    
+    @pytest.mark.need_review    
     def test_user_can_add_product_to_basket(self, browser):
         page = ProductPage(browser, ProductPageLocators.PRODUCT_LINK)
         page.open()

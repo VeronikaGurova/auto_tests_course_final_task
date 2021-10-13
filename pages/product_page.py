@@ -1,5 +1,6 @@
 from .base_page import BasePage
 from .locators import ProductPageLocators
+from selenium import webdriver
 
 class ProductPage(BasePage):
 
